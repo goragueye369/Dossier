@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sport et loisir - SenJaba</title>
+    <link rel="stylesheet" href="total.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>SenJaba</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="catégorie.html">Catégories</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="category-page">
+        <h2>Produits - Sport et loisir</h2>
+
+        <div class="filters">
+            <h3>Filtres</h3>
+            <form id="filtersForm">
+                <label for="priceFilter">Prix :</label>
+                <select id="priceFilter">
+                    <option value="all">Tous</option>
+                    <option value="0-50000">0 - 50 000 FCFA</option>
+                    <option value="50001-150000">50 001 - 150 000 FCFA</option>
+                    <option value="150001+">Plus de 150 000 FCFA</option>
+                </select>
+
+                <label for="brandFilter">Marque :</label>
+                <select id="brandFilter">
+                    <option value="all">Toutes</option>
+                    <option value="Nike">Nike</option>
+                    <option value="Adidas">Adidas</option>
+                    <option value="Puma">Puma</option>
+                    <option value="GoPro">GoPro</option>
+                </select>
+
+                <button type="button" onclick="applyFilters()">Appliquer</button>
+            </form>
+        </div>
+
+        <div class="product-list">
+            <div class="product-item" data-price="50000" data-brand="Nike">
+                <h4>Vélo de Montagne MNO</h4>
+                <p>Prix : 18 000 FCFA</p>
+                <a href="produit.html" class="button">Voir Détails</a>
+            </div>
+
+            <div class="product-item" data-price="60000" data-brand="Adidas">
+                <h4>Adidas Ultraboost 21</h4>
+                <p>Prix : 60 000 FCFA</p>
+                <a href="produit.html" class="button">Voir Détails</a>
+            </div>
+
+            <div class="product-item" data-price="45000" data-brand="Puma">
+                <h4>Puma Future 5.1</h4>
+                <p>Prix : 45 000 FCFA</p>
+                <a href="produit.html" class="button">Voir Détails</a>
+            </div>
+
+            <div class="product-item" data-price="120000" data-brand="GoPro">
+                <h4>Tapis de Yoga</h4>
+                <p>Prix : 6 000 FCFA</p>
+                <a href="produit.html" class="button">Voir Détails</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 SenJaba. Tous droits réservés.</p>
+    </footer>
+
+    <script>
+        function applyFilters() {
+            const priceFilter = document.getElementById("priceFilter").value;
+            const brandFilter = document.getElementById("brandFilter").value;
+
+            const products = document.querySelectorAll(".product-item");
+
+            products.forEach(function(product) {
+                const productPrice = parseInt(product.getAttribute("data-price"));
+                const productBrand = product.getAttribute("data-brand");
+
+                let priceCondition = true;
+                let brandCondition = true;
+
+                if (priceFilter !== "all") {
+                    if (priceFilter.includes("+")) {
+                        priceCondition = productPrice > parseInt(priceFilter.replace("+", ""));
+                    } else {
+                        const [minPrice, maxPrice] = priceFilter.split("-");
+                        priceCondition = productPrice >= parseInt(minPrice) && productPrice <= parseInt(maxPrice);
+                    }
+                }
+
+                if (brandCondition && brandFilter !== "all") {
+                    brandCondition = productBrand === brandFilter;
+                }
+
+                if (priceCondition && brandCondition) {
+                    product.style.display = "block";
+                } else {
+                    product.style.display = "none";
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SenJaba - Accueil</title>
+    <link rel="stylesheet" href="total.css">
+    <link rel="stylesheet" type="text/css" href="SenJaba.css">
+</head>
+
+<body>
+    <!-- En-tête -->
+    <header>
+        <h1>SenJaba</h1>
+        <nav>
+    <ul>
+        <li class="active"><a href="index.html">Accueil</a></li>
+        <li><a href="catégorie.html">Catégories</a></li>
+        <li><a href="produit.html">Produits</a></li>
+        <li><a href="connexion.html">Connexion</a></li>
+        <li><a href="contact.html">Contact</a></li>
+    </ul>
+</nav>
+
+        <div class="tt">
+            <h1>Bienvenue à SenJaba</h1>
+        </div>
+    </header>
+
+    <main>
+        <!-- Présentation de l'entreprise -->
+        <section id="presentation">
+            <h2>Qui sommes-nous ?</h2>
+            <p>SenJaba est une entreprise innovante spécialisée dans la vente de produits de haute qualité, allant de l'électronique à la beauté et la santé en passant par des vetements et accessoires,de la maison et jardin,et de le sport et loisir. Notre objectif est de vous offrir une vitrine en ligne où vous pouvez facilement explorer nos différentes catégories de produits, découvrir nos dernières offres et profiter de nos promotions exclusives.</p>
+        </section>
+
+        <!-- Les catégories de produits avec images -->
+        <section id="categories">
+            <h2>Nos Catégories de Produits</h2>
+            <div class="categorie">
+                <h3><a href="categorie1.html">Électronique</a></h3>
+                <p>Téléphones, ordinateurs, gadgets, etc.</p>
+                <img src="laptop-with-many-headphones-cell-phone-it_1013341-371613.jpg" alt="Électronique">
+            </div>
+            <div class="categorie">
+                <h3><a href="categorie2.html">Vêtements et accessoires</a></h3>
+                <p>Vêtements, chaussures, accessoires de mode, etc.</p>
+                <img src="beautiful-pastel-colors-female-clothing-600nw-2422849445.jpg" alt="Vêtements et accessoires">
+            </div>
+            <div class="categorie">
+                <h3><a href="categorie3.html">Maison et Jardin</a></h3>
+                <p>Meubles, appareils électroménagers, outils de jardinage, etc.</p>
+                <img src="meu.jpg" alt="Maison et Jardin">
+            </div>
+            <div class="categorie">
+                <h3><a href="categorie4.html">Beauté et Santé</a></h3>
+                <p>Cosmétiques, soins de la peau, produits de santé, etc.</p>
+                <img src="trendy-collage-made-of-natural-cosmetics-and-beauty-products-for-body-and-face-care.jpg" alt="Beauté et Santé">
+            </div>
+            <div class="categorie">
+                <h3><a href="categorie5.html">Sport et Loisirs</a></h3>
+                <p>Équipements sportifs, jeux, articles de loisirs, etc.</p>
+                <img src="depositphotos_183057156-stock-photo-sports-tools-green-grass-concept.jpg" alt="Sport et Loisirs">
+            </div>
+        </section>
+
+        <!-- Promotions -->
+        <section id="promotions">
+            <h2>Promotions</h2>
+            <p>Profitez de nos offres spéciales sur une sélection de produits électroniques
+                <img src="collecte-dispositifs-electroniques_23-2147677356.jpg" height="50%" width="50%" alt="Promo électronique">
+                <p>-20% sur les téléphones !</p>, vêtements, et plus encore !</p>
+            <div class="promo">
+            </div>
+            <div class="promo">
+                <img src="clothes-accessories-hanging-on-hanger-260nw-2461134205.jpg" height="50%" width="50%" alt="les accessoires">
+                <p>-30% sur les accessoires de mode !</p>
+            </div>
+        </section>
+
+        <!-- Produits populaires -->
+        <section id="populaires">
+            <h2>Produits Populaires</h2>
+            <div class="produit">
+                <img src="meilleurs-pc-portables.jpg" height="50%" width="50%" alt="Ordinateur portable performant">
+                <p>Ordinateur portable performant</p>
+                <p>Prix : 190 000FCFA</p>
+            </div>
+            <div class="produit">
+                <img src="puma-618x449.jpg" height="50%" width="50%" alt="Chaussures de sport tendance">
+                <p>Chaussures de sport tendance</p>
+                <p>Prix : 7 500FCFA</p>
+            </div>
+        </section>
+
+        <!-- Recommandations -->
+        <section id="recommandations">
+            <h2>Recommandations pour vous</h2>
+            <p>Basé sur vos précédents achats, voici des produits que vous pourriez aimer :</p>
+            <div class="recomm">
+                <img src="montre-connectee-femme-1-8-ip67-etanche-ainuevo-p.jpg" height="50%" width="50%" alt="Montre connectée">
+                <p>Montre connectée</p>
+                <p>Prix : 15 000FCFA</p>
+            </div>
+            <div class="recomm">
+                <img src="shutterstock_153976919.jpg" height="50%" width="50%" alt="Tondeuse de jardin">
+                <p>Tondeuse de jardin</p>
+                <p>Prix : 12 000FCFA</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Section CSV -->
+    <h1>Importer le fichier CSV</h1>
+    <input type="file" id="csvFileInput" accept=".csv">
+    <button onclick="loadCSV()">Charger</button>
+
+    <table id="userTable">
+        <thead>
+            <tr>
+                <th>Rôle</th>
+                <th>Nom d'utilisateur</th>
+                <th>Mot de passe</th>
+                <th>Prénom</th>
+                <th>Nom de famille</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        function loadCSV() {
+            const input = document.getElementById('csvFileInput').files[0];
+
+            if (!input) {
+                alert("Veuillez sélectionner un fichier CSV.");
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                const text = e.target.result;
+                const rows = text.split('\n');
+                const tbody = document.getElementById('userTable').getElementsByTagName('tbody')[0];
+                tbody.innerHTML = ''; // Réinitialiser le tableau
+
+                rows.forEach(row => {
+                    const columns = row.split(',');
+                    const tr = document.createElement('tr');
+
+                    columns.forEach(col => {
+                        const td = document.createElement('td');
+                        td.textContent = col.trim();
+                        tr.appendChild(td);
+                    });
+
+                    tbody.appendChild(tr);
+                });
+            };
+
+            reader.onerror = function() {
+                alert("Erreur lors de la lecture du fichier.");
+            };
+
+            reader.readAsText(input);
+        }
+    </script>
+
+    <!-- Pied de page -->
+    <footer>
+        <p>&copy; 2024 SenJava. Tous droits réservés.</p>
+    </footer>
+</body>
+
+</html>

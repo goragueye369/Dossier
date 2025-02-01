@@ -1,0 +1,7 @@
+Prénom : Gora
+Nom : GUEYE
+Matricule : 2021 00399
+L’adresse complète du site sur LWS : https://samacv.net//2023_2024/projet2/guéyeg/Projet DW
+Le login et le mot de passe pour accéder à l’administration de mon site
+Login : admin
+Mot de passe : admin123

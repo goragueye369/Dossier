@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Comptes - SenJava</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- En-tête -->
+    <header>
+        <div class="logo">
+            <h1><a href="index.html">SenJava</a></h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="login.html">Connexion</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Section de gestion des comptes -->
+    <section class="account-management">
+        <h2>Gestion des Comptes</h2>
+        <input type="file" id="csvFileInput" accept=".csv" onchange="handleFileSelect(event)">
+        
+        <button onclick="downloadCSV(users)">Télécharger les comptes modifiés</button>
+        
+        <!-- Formulaire pour ajouter un utilisateur -->
+        <h3>Ajouter un utilisateur</h3>
+        <form id="addUserForm">
+            <input type="text" id="username" placeholder="Nom d'utilisateur" required>
+            <input type="password" id="password" placeholder="Mot de passe" required>
+            <input type="text" id="role" placeholder="Rôle (administrator/vendor)" required>
+            <input type="text" id="name" placeholder="Nom complet" required>
+            <input type="text" id="contact" placeholder="Contact" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <button type="submit">Ajouter</button>
+        </form>
+
+        <!-- Formulaire pour modifier un utilisateur -->
+        <h3>Modifier un utilisateur</h3>
+        <form id="modifyUserForm">
+            <input type="text" id="modifyUsername" placeholder="Nom d'utilisateur à modifier" required>
+            <input type="text" id="newName" placeholder="Nouveau nom complet">
+            <input type="text" id="newContact" placeholder="Nouveau contact">
+            <input type="email" id="newEmail" placeholder="Nouvel email">
+            <button type="submit">Modifier</button>
+        </form>
+
+        <!-- Formulaire pour supprimer un utilisateur -->
+        <h3>Supprimer un utilisateur</h3>
+        <form id="deleteUserForm">
+            <input type="text" id="deleteUsername" placeholder="Nom d'utilisateur à supprimer" required>
+            <button type="submit">Supprimer</button>
+        </form>
+    </section>
+
+    <!-- Pied de page -->
+    <footer>
+        <p>&copy; 2024 SenJava. Tous droits réservés.</p>
+    </footer>
+
+    <!-- Script JavaScript -->
+    <script>
+        let users = [];
+
+function handleFileSelect(event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+        const text = e.target.result;
+        users = parseCSV(text);
+        console.log(users); // Affiche les utilisateurs dans la console pour vérification
+    };
+
+    reader.readAsText(file);
+}
+
+function parseCSV(csvText) {
+    const lines = csvText.split("\n");
+    const headers = lines[0].split(",");
+    const users = [];
+
+    for (let i = 1; i < lines.length; i++) {
+        const data = lines[i].split(",");
+        if (data.length === headers.length) {
+            const user = {};
+            for (let j = 0; j < headers.length; j++) {
+                user[headers[j].trim()] = data[j].trim();
+            }
+            users.push(user);
+        }
+    }
+    return users;
+}
+
+function addUser(users, username, password, role, name, contact, email) {
+    users.push({ username, password, role, name, contact, email });
+}
+
+function modifyUser(users, username, newData) {
+    const user = users.find(u => u.username === username);
+    if (user) {
+        Object.assign(user, newData);
+    }
+}
+
+function deleteUser(users, username) {
+    const index = users.findIndex(u => u.username === username);
+    if (index !== -1) {
+        users.splice(index, 1);
+    }
+}
+
+function convertToCSV(users) {
+    const headers = Object.keys(users[0]).join(",");
+    const lines = users.map(user => Object.values(user).join(","));
+    return [headers, ...lines].join("\n");
+}
+
+function downloadCSV(users, filename = "updated_users.csv") {
+    const csvContent = convertToCSV(users);
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", filename);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+// Gestion du formulaire d'ajout d'utilisateur
+document.getElementById("addUserForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    const role = document.getElementById("role").value;
+    const name = document.getElementById("name").value;
+    const contact = document.getElementById("contact").value;
+    const email = document.getElementById("email").value;
+
+    addUser(users, username, password, role, name, contact, email);
+    alert("Utilisateur ajouté avec succès !");
+});
+
+// Gestion du formulaire de modification d'utilisateur
+document.getElementById("modifyUserForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    const username = document.getElementById("modifyUsername").value;
+    const newName = document.getElementById("newName").value;
+    const newContact = document.getElementById("newContact").value;
+    const newEmail = document.getElementById("newEmail").value;
+
+    modifyUser(users, username, { name: newName, contact: newContact, email: newEmail });
+    alert("Utilisateur modifié avec succès !");
+});
+
+// Gestion du formulaire de suppression d'utilisateur
+document.getElementById("deleteUserForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    const username = document.getElementById("deleteUsername").value;
+    deleteUser(users, username);
+    alert("Utilisateur supprimé avec succès !");
+});
+
+    </script>
+</body>
+
+</html>

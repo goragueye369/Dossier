@@ -1,0 +1,82 @@
+/* Global Style */
+ul {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Cursive', sans-serif;
+}
+
+header {
+    background-image: url('gf.png');
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    background-blend-mode: overlay;
+    background-color: rgba(0, 0, 0, 0.6); /* Superposition sombre pour meilleur contraste */
+}
+
+/* Navigation */
+ul {
+    display: flex;
+    justify-content: center; /* Centrer les éléments de navigation */
+    margin-top: 20px;
+}
+
+ul li a {
+    text-decoration: none;
+    color: white;
+    padding: 12px 25px;
+    text-transform: uppercase;
+    border: 2px solid blue;
+    margin: 10px;
+    border-radius: 25px; /* Arrondir les bords pour un effet plus moderne */
+    transition: background 0.3s, color 0.3s; /* Transition pour un effet fluide */
+}
+
+ul li a:hover {
+    background: #4CAF50; /* Vert plus doux */
+    color: white;
+}
+
+ul li.active a {
+    background: #4CAF50;
+    color: white;
+}
+
+/* Centered Text Section */
+.tt {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center; /* Centrer le texte */
+}
+
+.tt h1 {
+    color: white; /* Texte en blanc pour un meilleur contraste */
+    font-size: 60px; /* Agrandir un peu le texte */
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent pour rendre le texte lisible */
+    padding: 20px 30px;
+    border-radius: 10px;
+    display: inline-block;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Ombre pour donner un effet flottant */
+}
+
+/* Responsive for smaller screens */
+@media (max-width: 768px) {
+    .tt h1 {
+        font-size: 40px; /* Ajuster la taille du texte pour les petits écrans */
+    }
+    
+    ul {
+        flex-direction: column; /* Afficher le menu verticalement sur mobile */
+    }
+
+    ul li a {
+        margin: 5px 0; /* Réduire l'espace entre les liens du menu sur mobile */
+    }
+}

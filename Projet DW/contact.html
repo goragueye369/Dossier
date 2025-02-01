@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - SenJava</title>
+    <link rel="stylesheet" href="total.css">
+   
+</head>
+
+<body>
+     <!-- En-tête -->
+    <header>
+        <div class="logo">
+            <h1>SenJaba</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="SenJaba.html">Déconnexion</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="contact">
+            <h2>Contactez-nous</h2>
+            <form id="contact-form">
+                <label for="name">Nom     :</label>
+                <input type="text" id="name" name="name"><br>
+                <label for="pname">Prenom :</label>
+                <input type="text" id="pname" name="pname"><br>
+                <label for="tel">Téléphone :</label>
+                <input type="text" id="tel" name="tel"><br>
+
+                <label for="email">Email   :</label>
+                <input type="email" id="email" name="email"><br>
+                <label for="adress">Adresse :</label>
+                <input type="text" id="adress" name="adress"><br>
+
+                <label for="message">Message :</label>
+                <textarea id="message" name="message"></textarea><br>
+
+                <button type="submit">Envoyer</button>
+                <br>
+                <p id="error" style="color: red;"></p>
+            </form>
+            <div id="contact-info">
+                <h3>Informations de Contact</h3>
+                <p>Téléphone :+221 77 898 40 29</p>
+                <p>Email : contact@senjaba.com</p>
+                <p>Adresse : Point E, Dakar, Sénégal</p>
+                <a href="https://www.google.com">Lien vers Google</a>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15913.218846790077!2d-17.4571839!3d14.6860975!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12aaf9a83a4b7df3%3A0x3a7d2a60cc43b36c!2sPoint%20E%2C%20Dakar%2C%20S%C3%A9n%C3%A9gal!5e0!3m2!1sen!2sfr!4v1693759385041!5m2!1sen!2sfr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+
+            </div>
+        </section>
+    </main>
+
+        <!-- Pied de page -->
+    <footer>
+        <p>&copy; 2024 SenJava. Tous droits réservés.</p>
+    </footer>
+<script>
+    document.getElementById("contact-form").addEventListener("submit", function(event) {
+    event.preventDefault(); // Empêche l'envoi du formulaire
+
+    let errorMessages = [];
+    let name = document.getElementById("name").value.trim();
+    let pname = document.getElementById("pname").value.trim();
+    let tel = document.getElementById("tel").value.trim();
+    let email = document.getElementById("email").value.trim();
+    let adress = document.getElementById("adress").value.trim();
+    let message = document.getElementById("message").value.trim();
+
+    document.getElementById("error").innerHTML = ""; // Efface le contenu du message d'erreur avant validation
+
+    if (name === "") errorMessages.push("Le champ 'Nom' est requis.");
+    if (pname === "") errorMessages.push("Le champ 'Prénom' est requis.");
+    if (tel === "") {
+        errorMessages.push("Le champ 'Téléphone' est requis.");
+    } else if (!/^\d+$/.test(tel)) {
+        errorMessages.push("Le champ 'Téléphone' doit contenir uniquement des chiffres.");
+    }
+    if (email === "") {
+        errorMessages.push("Le champ 'Email' est requis.");
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        errorMessages.push("Le format de l'email est incorrect.");
+    }
+    if (adress === "") errorMessages.push("Le champ 'Adresse' est requis.");
+    if (message === "") errorMessages.push("Le champ 'Message' est requis.");
+
+    if (errorMessages.length > 0) {
+        document.getElementById("error").style.color = "red";
+        document.getElementById("error").innerHTML = errorMessages.join("<br>");
+    } else {
+        document.getElementById("error").style.color = "green"; 
+        document.getElementById("error").innerHTML = "Formulaire soumis avec succès!";
+        
+        // Stocker le message dans localStorage
+        const contactMessage = { name, email, message };
+        let messages = JSON.parse(localStorage.getItem('contactMessages')) || [];
+        messages.push(contactMessage);
+        localStorage.setItem('contactMessages', JSON.stringify(messages));
+
+        // Réinitialise le formulaire
+        document.getElementById("contact-form").reset();
+    }
+});
+
+</script>script>
+    </body>
+
+</html>

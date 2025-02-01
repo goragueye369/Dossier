@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil Vendeur - SenJabba</title>
+    <link rel="stylesheet" href="total.css">
+</head>
+
+<body>
+    <!-- En-tête -->
+    <header>
+        <div class="logo">
+            <h1>SenJaba</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="SenJaba.html">Déconnexion</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Section de présentation du vendeur -->
+    <section class="seller-presentation">
+        <h2>Bienvenue, Gora GUEYE</h2>
+        <p>Contact : +221 77 898 40 29</p>
+        <p>Email : goragueye@vendeur.com</p>
+        <p>Spécialisé dans la vente de produits électroniques de haute qualité.</p>
+    </section>
+
+    <!-- Section de gestion des produits -->
+    <section class="product-management">
+        <h2>Vos Produits</h2>
+
+        <!-- Formulaire d'ajout/modification de produit -->
+        <div class="product-form">
+            <h3 id="formTitle">Ajouter un nouveau produit</h3>
+            <form id="productForm">
+                <input type="hidden" id="productIndex" name="productIndex">
+                <div class="form-group">
+                    <label for="productName">Nom du produit :</label>
+                    <input type="text" id="productName" name="productName" required>
+                </div>
+                <div class="form-group">
+                    <label for="productCategory">Catégorie :</label>
+                    <select id="productCategory" name="productCategory" required>
+                        <option value="electronique">Électronique</option>
+                        <option value="vetements">Vêtements et accessoires</option>
+                        <option value="maison">Maison et Jardin</option>
+                        <option value="beaute">Beauté et santé</option>
+                        <option value="sport">Sport et loisir</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="productPrice">Prix :</label>
+                    <input type="text" id="productPrice" name="productPrice" required>
+                </div>
+                <div class="form-group">
+                    <label for="productDescription">Description :</label>
+                    <textarea id="productDescription" name="productDescription" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="productImage">Image (URL) :</label>
+                    <input type="text" id="productImage" name="productImage" required>
+                </div>
+                <button type="submit" id="submitButton">Ajouter</button>
+            </form>
+        </div>
+
+        <!-- Liste des produits par catégorie -->
+        <div class="product-list">
+            <h3>Produits par catégorie</h3>
+            <div id="productCategories">
+                <!-- Les produits seront ajoutés dynamiquement par JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Pied de page -->
+    <footer>
+        <p>&copy; 2024 SenJaba. Tous droits réservés.</p>
+    </footer>
+    <script>
+    	document.addEventListener("DOMContentLoaded", function() {
+    const productForm = document.getElementById("productForm");
+    const productCategoriesDiv = document.getElementById("productCategories");
+    const formTitle = document.getElementById("formTitle");
+    const submitButton = document.getElementById("submitButton");
+    const productIndexInput = document.getElementById("productIndex");
+
+    let products = [
+        { name: "Smartphone samsung", category: "electronique", price: "80000 FCFA", description: "Un smartphone performant avec écran AMOLED.", image: "GALAXY-A15-BLEU.jpg" },
+        { name: "Ordinateur Portable hp", category: "electronique", price: "1600000 FCFA", description: "Ordinateur portable de dernière génération.", image: "pc-portable-hp-15s-fq5022nf-15-6-fhd-core-i7.jpg" },
+        { name: "Chaussures de sport", category: "vetements", price: "10000 FCFA", description: "Chaussures de sport confortables.", image: "paire-baskets_144627-3799.jpg" }
+    ];
+
+    // Fonction pour afficher les produits par catégorie
+    function displayProducts() {
+        productCategoriesDiv.innerHTML = "";
+
+        // Organiser les produits par catégorie
+        const categories = products.reduce((acc, product) => {
+            if (!acc[product.category]) {
+                acc[product.category] = [];
+            }
+            acc[product.category].push(product);
+            return acc;
+        }, {});
+
+        // Créer l'affichage pour chaque catégorie
+        for (const category in categories) {
+            const categoryDiv = document.createElement("div");
+            categoryDiv.classList.add("category");
+
+            const categoryTitle = document.createElement("h4");
+            categoryTitle.textContent = getCategoryName(category);
+            categoryDiv.appendChild(categoryTitle);
+
+            const productTable = document.createElement("table");
+            const tableHeader = `
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Description</th>
+                        <th>Prix</th>
+                        <th>Image</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>`;
+            productTable.innerHTML = tableHeader;
+
+            const tableBody = document.createElement("tbody");
+
+            categories[category].forEach((product, index) => {
+                const row = tableBody.insertRow();
+                row.insertCell(0).textContent = product.name;
+                row.insertCell(1).textContent = product.description;
+                row.insertCell(2).textContent = product.price;
+                row.insertCell(3).innerHTML = `<img src="${product.image}" alt="${product.name}" width="50">`;
+                const actionsCell = row.insertCell(4);
+                actionsCell.innerHTML = `<button onclick="editProduct(${index})">Modifier</button> <button onclick="deleteProduct(${index})">Supprimer</button>`;
+            });
+
+            productTable.appendChild(tableBody);
+            categoryDiv.appendChild(productTable);
+            productCategoriesDiv.appendChild(categoryDiv);
+        }
+    }
+
+    // Fonction pour obtenir le nom complet de la catégorie
+    function getCategoryName(category) {
+        const categoryNames = {
+            "electronique": "Électronique",
+            "vetements": "Vêtements et accessoires",
+            "maison": "Maison et Jardin",
+            "beaute": "Beauté et santé",
+            "sport": "Sport et loisir"
+        };
+        return categoryNames[category] || category;
+    }
+
+    // Ajouter ou modifier un produit
+    productForm.addEventListener("submit", function(event) {
+        event.preventDefault();
+        const productName = document.getElementById("productName").value;
+        const productCategory = document.getElementById("productCategory").value;
+        const productPrice = document.getElementById("productPrice").value;
+        const productDescription = document.getElementById("productDescription").value;
+        const productImage = document.getElementById("productImage").value;
+        const productIndex = productIndexInput.value;
+
+        if (productIndex === "") {
+            // Ajouter un nouveau produit
+            products.push({
+                name: productName,
+                category: productCategory,
+                price: productPrice,
+                description: productDescription,
+                image: productImage
+            });
+        } else {
+            // Modifier un produit existant
+            products[productIndex] = {
+                name: productName,
+                category: productCategory,
+                price: productPrice,
+                description: productDescription,
+                image: productImage
+            };
+            productIndexInput.value = ""; // Réinitialiser l'indice
+            formTitle.textContent = "Ajouter un nouveau produit";
+            submitButton.textContent = "Ajouter";
+        }
+
+        displayProducts();
+        productForm.reset(); // Réinitialiser le formulaire
+    });
+
+    // Modifier un produit
+    window.editProduct = function(index) {
+        const product = products[index];
+        document.getElementById("productName").value = product.name;
+        document.getElementById("productCategory").value = product.category;
+        document.getElementById("productPrice").value = product.price;
+        document.getElementById("productDescription").value = product.description;
+        document.getElementById("productImage").value = product.image;
+        productIndexInput.value = index;
+
+        formTitle.textContent = "Modifier le produit";
+        submitButton.textContent = "Mettre à jour";
+    };
+
+    // Supprimer un produit
+    window.deleteProduct = function(index) {
+        products.splice(index, 1);
+        displayProducts();
+    };
+
+    // Initialiser l'affichage
+    displayProducts();
+});
+
+    </script>
+</body>
+
+</html>

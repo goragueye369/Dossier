@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administration - SenJava</title>
+    <link rel="stylesheet" href="total.css">
+    <!-- <script src="document.js" defer></script> -->
+</head>
+
+<body>
+     <!-- En-tête -->
+    <header>
+        <div class="logo">
+            <h1>SenJaba</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="SenJaba.html">Déconnexion</a></li>
+            </ul>
+        </nav>
+        <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+    </header>
+     <!-- Section de gestion des vendeurs -->
+    <section class="admin-section">
+        <h2>Gestion des vendeurs</h2>
+        
+        <!-- Formulaire d'ajout/modification de vendeur -->
+        <div class="admin-form">
+            <h3 id="formTitle">Ajouter un nouveau vendeur</h3>
+            <form id="sellerForm">
+                <input type="hidden" id="sellerIndex" name="sellerIndex">
+                <div class="form-group">
+                    <label for="sellerName">Nom :</label>
+                    <input type="text" id="sellerName" name="sellerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="sellerContact">Contact :</label>
+                    <input type="text" id="sellerContact" name="sellerContact" required>
+                </div>
+                <div class="form-group">
+                    <label for="sellerEmail">Email :</label>
+                    <input type="email" id="sellerEmail" name="sellerEmail" required>
+                </div>
+                <button type="submit" id="submitButton">Ajouter</button>
+            </form>
+        </div>
+
+        <!-- Liste des vendeurs -->
+        <div class="seller-list">
+            <h3>Liste des vendeurs</h3>
+            <table id="sellerTable">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Contact</th>
+                        <th>Email</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Les lignes seront ajoutées dynamiquement par JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Section de visualisation des messages de contact -->
+    <section class="admin-section">
+        <h2>Messages de contact</h2>
+        <div class="contact-messages">
+            <table id="contactTable">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Email</th>
+                        <th>Message</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Les messages de contact seront ajoutés ici dynamiquement -->
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Pied de page -->
+    <footer>
+        <p>&copy; 2024 SenJava. Tous droits réservés.</p>
+    </footer>
+    <script>
+    	document.addEventListener("DOMContentLoaded", function() {
+    const sellerForm = document.getElementById("sellerForm");
+    const sellerTable = document.getElementById("sellerTable").getElementsByTagName("tbody")[0];
+    const contactTable = document.getElementById("contactTable").getElementsByTagName("tbody")[0];
+    const formTitle = document.getElementById("formTitle");
+    const submitButton = document.getElementById("submitButton");
+    const sellerIndexInput = document.getElementById("sellerIndex");
+
+    // Exemple de données pour les vendeurs et les messages
+    let sellers = [
+        { name: "Gora GUEYE", contact: "+221 77 898 40 29", email: "goragueye@vendeur.com" },
+        { name: "Marie Ndiaye", contact: "+221 77 234 56 78", email: "abdoundour@vendeur.com" }
+    ];
+
+    const messages = [
+        { name: "Alpha Diallo", email: "alpha.diallo@example.com", message: "Je souhaite en savoir plus sur vos produits." },
+        { name: "Binta Sow", email: "binta.sow@example.com", message: "Merci pour votre service rapide !" }
+    ];
+
+    // Fonction pour afficher les vendeurs dans le tableau
+    function displaySellers() {
+        sellerTable.innerHTML = ""; // Vider le tableau avant d'ajouter les lignes
+        sellers.forEach((seller, index) => {
+            const row = sellerTable.insertRow();
+            row.insertCell(0).textContent = seller.name;
+            row.insertCell(1).textContent = seller.contact;
+            row.insertCell(2).textContent = seller.email;
+            const actionsCell = row.insertCell(3);
+            actionsCell.innerHTML = `<button onclick="editSeller(${index})">Modifier</button> <button onclick="deleteSeller(${index})">Supprimer</button>`;
+        });
+    }
+
+    // Fonction pour afficher les messages de contact dans le tableau
+    function displayMessages() {
+        contactTable.innerHTML = ""; // Vider le tableau avant d'ajouter les lignes
+        messages.forEach((message) => {
+            const row = contactTable.insertRow();
+            row.insertCell(0).textContent = message.name;
+            row.insertCell(1).textContent = message.email;
+            row.insertCell(2).textContent = message.message;
+        });
+    }
+
+    // Ajouter ou modifier un vendeur
+    sellerForm.addEventListener("submit", function(event) {
+        event.preventDefault();
+        const sellerName = document.getElementById("sellerName").value;
+        const sellerContact = document.getElementById("sellerContact").value;
+        const sellerEmail = document.getElementById("sellerEmail").value;
+        const sellerIndex = sellerIndexInput.value;
+
+        if (sellerIndex === "") {
+            // Ajouter un nouveau vendeur
+            sellers.push({ name: sellerName, contact: sellerContact, email: sellerEmail });
+        } else {
+            // Modifier un vendeur existant
+            sellers[sellerIndex] = { name: sellerName, contact: sellerContact, email: sellerEmail };
+            sellerIndexInput.value = ""; // Réinitialiser l'indice
+            formTitle.textContent = "Ajouter un nouveau vendeur";
+            submitButton.textContent = "Ajouter";
+        }
+
+        displaySellers();
+        sellerForm.reset(); // Réinitialiser le formulaire
+    });
+
+    // Modifier un vendeur
+    window.editSeller = function(index) {
+        const seller = sellers[index];
+        document.getElementById("sellerName").value = seller.name;
+        document.getElementById("sellerContact").value = seller.contact;
+        document.getElementById("sellerEmail").value = seller.email;
+        sellerIndexInput.value = index;
+
+        formTitle.textContent = "Modifier le vendeur";
+        submitButton.textContent = "Mettre à jour";
+    };
+
+    // Supprimer un vendeur
+    window.deleteSeller = function(index) {
+        sellers.splice(index, 1);
+        displaySellers();
+    };
+
+    // Initialiser l'affichage
+    displaySellers();
+    displayMessages();
+});
+
+
+    </script>
+    <h1>Gestion des utilisateurs</h1>
+    <input type="file" id="csvFileInput" accept=".csv">
+    <button onclick="loadCSV()">Charger les utilisateurs</button>
+
+    <table id="userTable">
+        <thead>
+            <tr>
+                <th>Rôle</th>
+                <th>Nom d'utilisateur</th>
+                <th>Prénom</th>
+                <th>Nom de famille</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+   <script>
+    let usersData = [];
+
+    function loadCSV() {
+        const input = document.getElementById('csvFileInput').files[0];
+
+        if (!input) {
+            alert("Veuillez sélectionner un fichier CSV.");
+            return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            const text = e.target.result;
+            const rows = text.split('\n');
+            const tbody = document.getElementById('userTable').getElementsByTagName('tbody')[0];
+            tbody.innerHTML = ''; // Réinitialiser le tableau
+
+            usersData = rows.map(row => row.split(',').map(col => col.trim()));
+
+            usersData.slice(1).forEach((columns, index) => {
+                const tr = document.createElement('tr');
+
+                columns.slice(0, 4).forEach(col => {
+                    const td = document.createElement('td');
+                    td.textContent = col;
+                    tr.appendChild(td);
+                });
+
+                const actionTd = document.createElement('td');
+
+                // Boutons de modification et suppression
+                const editBtn = document.createElement('button');
+                editBtn.textContent = "Modifier";
+                editBtn.onclick = function() {
+                    editUser(index + 1); // +1 pour correspondre à la ligne dans usersData
+                };
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = "Supprimer";
+                deleteBtn.onclick = function() {
+                    deleteUser(index + 1); // +1 pour correspondre à la ligne dans usersData
+                };
+
+                actionTd.appendChild(editBtn);
+                actionTd.appendChild(deleteBtn);
+                tr.appendChild(actionTd);
+
+                tbody.appendChild(tr);
+            });
+        };
+
+        reader.onerror = function() {
+            alert("Erreur lors de la lecture du fichier.");
+        };
+
+        reader.readAsText(input);
+    }
+
+    function editUser(index) {
+        const userData = usersData[index];
+        const newValues = prompt("Modifier les informations (séparées par des virgules):", userData.join(','));
+
+        if (newValues) {
+            usersData[index] = newValues.split(',').map(col => col.trim());
+            updateTable();
+        }
+    }
+
+    function deleteUser(index) {
+        if (confirm("Voulez-vous vraiment supprimer cet utilisateur ?")) {
+            usersData.splice(index, 1); // Retirer la ligne correspondante
+            updateTable();
+        }
+    }
+
+    function updateTable() {
+        const tbody = document.getElementById('userTable').getElementsByTagName('tbody')[0];
+        tbody.innerHTML = ''; // Réinitialiser le tableau
+
+        usersData.slice(1).forEach((columns, index) => {
+            const tr = document.createElement('tr');
+
+            columns.slice(0, 4).forEach(col => {
+                const td = document.createElement('td');
+                td.textContent = col;
+                tr.appendChild(td);
+            });
+
+            const actionTd = document.createElement('td');
+
+            // Boutons de modification et suppression
+            const editBtn = document.createElement('button');
+            editBtn.textContent = "Modifier";
+            editBtn.onclick = function() {
+                editUser(index + 1); // +1 pour correspondre à la ligne dans usersData
+            };
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.textContent = "Supprimer";
+            deleteBtn.onclick = function() {
+                deleteUser(index + 1); // +1 pour correspondre à la ligne dans usersData
+            };
+
+            actionTd.appendChild(editBtn);
+            actionTd.appendChild(deleteBtn);
+            tr.appendChild(actionTd);
+
+            tbody.appendChild(tr);
+        });
+    }
+</script>
+<script> 
+    document.addEventListener("DOMContentLoaded", function() {
+    // Fonction pour afficher les messages de contact dans le tableau
+    function displayMessages() {
+        const contactTable = document.getElementById("contactTable").getElementsByTagName("tbody")[0];
+        contactTable.innerHTML = ""; // Vider le tableau avant d'ajouter les lignes
+
+        let messages = JSON.parse(localStorage.getItem('contactMessages')) || [];
+        messages.forEach((message) => {
+            const row = contactTable.insertRow();
+            row.insertCell(0).textContent = message.name;
+            row.insertCell(1).textContent = message.email;
+            row.insertCell(2).textContent = message.message;
+        });
+    }
+
+    // Initialiser l'affichage des messages
+    displayMessages();
+});
+
+</script>
+
+</body>
+
+</html>

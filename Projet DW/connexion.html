@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - SenJaba</title>
+    <link rel="stylesheet" href="total.css">
+    <!-- <script src="document.js" defer></script> -->
+</head>
+
+<body>
+     <!-- En-tête -->
+    <header>
+        <div class="logo">
+            <h1>SenJaba</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="SenJaba.html">Déconnexion</a></li>
+            </ul>
+        </nav>
+    </header>
+    <!-- Section de connexion -->
+    <section class="login">
+        <h2>Connexion</h2>
+        <form id="loginForm" onsubmit="return validateLogin()">
+            <div class="form-group">
+                <label for="username">Identifiant :</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Mot de passe :</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit">Se connecter</button>
+            <p id="error-message" style="color: red;"></p>
+        </form>
+    </section>
+
+    <!-- Pied de page -->
+    <footer>
+        <p>&copy; 2024 SenJaba. Tous droits réservés.</p>
+    </footer>
+   <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Identifiants prédéfinis pour l'administrateur
+            const adminCredentials = {
+                username: "admin",
+                password: "admin123"
+            };
+
+            // Validation des informations de connexion
+            document.getElementById("loginForm").addEventListener("submit", function(event) {
+                event.preventDefault(); // Empêche le formulaire d'être soumis
+
+                const username = document.getElementById("username").value;
+                const password = document.getElementById("password").value;
+                const errorMessage = document.getElementById("error-message");
+
+                // Vérifier si l'utilisateur est l'administrateur
+                if (username === adminCredentials.username && password === adminCredentials.password) {
+                    // Rediriger vers la page d'administration
+                    window.location.href = "administration.html";
+                } else {
+                    // Considérer tout autre identifiant/mot de passe comme un vendeur
+                    if (username !== "" && password !== "") {
+                        // Rediriger vers la page d'accueil du vendeur
+                        window.location.href = "accueilVendeur.html";
+                    } else {
+                        errorMessage.textContent = "Identifiant ou mot de passe incorrect.";
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
